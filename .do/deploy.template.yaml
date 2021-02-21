@@ -1,0 +1,103 @@
+spec:
+  name: climateclock
+  services:
+  - name: web
+    git:
+      branch: main
+      repo_clone_url: https://github.com/bobbyiliev/climateclock.git
+    run_command: php artisan migrate --force ; heroku-php-apache2 public/
+    envs:
+    - key: APP_NAME
+      scope: RUN_TIME
+      value:  ClimateClock
+    - key: APP_KEY
+      scope: RUN_TIME
+      value: "base64:UdAH2B63rlotjrkSSsj3Hppy4gbfr+OeHvtSdF9r9q8="
+    - key: APP_URL
+      scope: RUN_TIME
+      value: ${APP_URL}
+    - key: APP_DEBUG
+      scope: RUN_TIME
+      value: "false"
+    - key: DB_CONNECTION
+      scope: RUN_TIME
+      value: "pgsql"
+    - key: DB_HOST
+      scope: RUN_TIME
+      value: ${climateclock-db.HOSTNAME}
+    - key: DB_PORT
+      scope: RUN_TIME
+      value: ${climateclock-db.PORT}
+    - key: DB_DATABASE
+      scope: RUN_TIME
+      value: ${climateclock-db.DATABASE}
+    - key: DB_USERNAME
+      scope: RUN_TIME
+      value: ${climateclock-db.USERNAME}
+      type: SECRET
+    - key: DB_PASSWORD
+      scope: RUN_TIME
+      value: ${climateclock-db.PASSWORD}
+      type: SECRET
+    - key: DO_SPACES
+      scope: RUN_TIME
+      value: "false"
+    - key: DO_SPACES_KEY
+      scope: RUN_TIME
+      value: "YOUR_DO_SPACES_KEY"
+      type: SECRET
+    - key: DO_SPACES_SECRET
+      scope: RUN_TIME
+      value: "YOUR_DO_SPACES_SECRET"
+      type: SECRET
+    - key: DO_SPACES_ENDPOINT
+      scope: RUN_TIME
+      value: "YOUR_DO_SPACES_ENDPOINT"
+    - key: DO_SPACES_REGION
+      scope: RUN_TIME
+      value: "YOUR_DO_SPACES_REGION"
+    - key: DO_SPACES_BUCKET
+      scope: RUN_TIME
+      value: "YOUR_DO_SPACES_BUCKET"
+  databases:
+  - name: climateclock-db
+  jobs:
+  - name: migrate
+    kind: POST_DEPLOY
+    git:
+      repo_clone_url: https://github.com/bobbyiliev/climateclock.git
+      branch: main
+    run_command: php artisan migrate --seed
+    envs:
+    - key: APP_NAME
+      scope: RUN_TIME
+      value:  ClimateClock
+    - key: APP_KEY
+      scope: RUN_TIME
+      value: "base64:UdAH2B63rlotjrkSSsj3Hppy4gbfr+OeHvtSdF9r9q8="
+    - key: APP_URL
+      scope: RUN_TIME
+      value: ${APP_URL}
+    - key: APP_DEBUG
+      scope: RUN_TIME
+      value: "false"
+    - key: DB_CONNECTION
+      scope: RUN_TIME
+      value: "pgsql"
+    - key: DB_HOST
+      scope: RUN_TIME
+      value: ${climateclock-db.HOSTNAME}
+    - key: DB_PORT
+      scope: RUN_TIME
+      value: ${climateclock-db.PORT}
+    - key: DB_DATABASE
+      scope: RUN_TIME
+      value: ${climateclock-db.DATABASE}
+    - key: DB_USERNAME
+      scope: RUN_TIME
+      value: ${climateclock-db.USERNAME}
+      type: SECRET
+    - key: DB_PASSWORD
+      scope: RUN_TIME
+      value: ${climateclock-db.PASSWORD}
+      type: SECRET
